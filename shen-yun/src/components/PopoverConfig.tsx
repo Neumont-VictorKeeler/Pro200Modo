@@ -19,9 +19,10 @@ import axios from 'axios';
 
 export default function PopoverConfig({ isHidden }: { isHidden: boolean }) {
     const [personality, setPersonality] = useState<string | undefined>(undefined);
+    const [language, setLanguage] = useState<string | undefined>(undefined);
     const [personalityStrength, setPersonalityStrength] = useState<number>(33);
     const [yapness, setYapness] = useState<number>(33);
-
+    const [slangUsage, setSlangUsage] = useState<number>(33);
     const sendMessageToChatbot = async (message: string) => {
         try {
             await axios.post("/api/chat", { prompt: message });
@@ -39,7 +40,10 @@ export default function PopoverConfig({ isHidden }: { isHidden: boolean }) {
         setYapness(val[0]);
         sendMessageToChatbot(`Yapness set to ${val[0]}`);
     };
-
+    const handleSlangUsageChange = (val: number[]) => {
+        setSlangUsage(val[0]);
+        sendMessageToChatbot(`Slang usage set to ${val[0]}`);
+    }
     return (
         <div className={`flex ${isHidden ? "hidden" : ""}`}>
             <Popover>
@@ -61,7 +65,18 @@ export default function PopoverConfig({ isHidden }: { isHidden: boolean }) {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-
+                    <Select value={language} onValueChange={setLanguage}>
+                        <SelectTrigger className="w-[180px] text-black mb-1">
+                            <SelectValue placeholder="Language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Language</SelectLabel>
+                                <SelectItem value="english">English</SelectItem>
+                                <SelectItem value="chinese">chinese</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <div className="mb-2">
                         Personality Strength
                         <Slider
@@ -80,6 +95,16 @@ export default function PopoverConfig({ isHidden }: { isHidden: boolean }) {
                             max={100}
                             step={1}
                             onValueChange={handleYapnessChange}
+                        />
+                    </div>
+
+                    <div>
+                        Slang Usage
+                        <Slider
+                            value={[slangUsage]}
+                            max={100}
+                            step={1}
+                            onValueChange={handleSlangUsageChange}
                         />
                     </div>
                 </PopoverContent>

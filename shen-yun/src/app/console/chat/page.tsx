@@ -143,7 +143,6 @@ export default function ChatPage() {
                     >
                         Send
                     </Button>
-                    //green buttons
                     <Button onClick={saveChat} className="ml-2 bg-[green] text-white">
                         Save Chat
                     </Button>
